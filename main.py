@@ -49,11 +49,6 @@ def search_wine_by_name(name: str, lang: str, db: Session = Depends(get_db)):
     return crud.get_wine_by_wine_name(db, name)
 
 
-@app.post("/search/chat/{ocr}", status_code=200, response_model=List[schemas.Wine])
-def ocr_search(db: Session = Depends(get_db)):
-    return
-
-
 # 상위 10개 와인데이터 불러오기
 @app.get("/top/", status_code=200, response_model=List[schemas.Wine])
 def top_ten(db: Session = Depends(get_db)):
@@ -82,6 +77,15 @@ def run_conversation(item: schemas.OcrItem, db: Session = Depends(get_db)):
     message = response_message["content"]
     return crud.search_wine_by_en_name(db, message)
 
+#추천와인 3개 보내주기
+@app.get("/test/", status_code=200, response_model=List[schemas.Wine])
+def recom_wine(wine1: int, wine2: int, wine3: int, db: Session = Depends(get_db)):
+    wines = [
+        crud.get_wine_by_wine_id(db, wine1),
+        crud.get_wine_by_wine_id(db, wine2),
+        crud.get_wine_by_wine_id(db, wine3)
+    ]
+    return wines
 # 이름으로 와인 가져오기
 # @app.get("/wines/{name}", status_code=200, response_model=schemas.Wine)
 # def get_wine_ex_name(name: str, db: Session = Depends(get_db)):
