@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "fast-server"
+version = "0.1.0"
+description = ""
+authors = ["dongwon Oh <omj1010@naver.com>"]
+readme = "README.md"
+packages = [{ include = "fast_server" }]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+fastapi = "^0.101.1"
+uvicorn = "^0.23.2"
+sqlalchemy = "^2.0.20"
+psycopg = { extras = ["binary", "pool"], version = "^3.1.10" }
+openai = "^0.27.9"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
