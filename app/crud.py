@@ -1,7 +1,6 @@
 from sqlalchemy import or_
 from sqlalchemy.orm import Session
 
-from sqlalchemy import desc
 
 import app.models as models
 
@@ -36,3 +35,11 @@ def update_count(db: Session, wine: models.Wine):
     db.add(wine)
     db.commit()
     db.refresh(wine)
+
+def re_wine(re1:int,re2:int,re3:int,db:Session):
+    recommended_wines = [
+        get_wine_by_wine_id(db, re1),
+        get_wine_by_wine_id(db, re2),
+        get_wine_by_wine_id(db, re3)
+    ]
+    return recommended_wines

@@ -1,16 +1,7 @@
 from typing import Union
 
 from pydantic import BaseModel
-
-
-class ToDo(BaseModel):
-    id: Union[int, None] = None
-    contents: str
-    is_done: bool
-
-    class Config:
-        from_attributes = True
-
+from typing import List
 
 class OcrItem(BaseModel):
     ocr_text: str
@@ -31,3 +22,10 @@ class Wine(BaseModel):
     food: str
     pic_url: str
     count: int
+    re1:int
+    re2:int
+    re3:int
+
+class WineWithRecommendations(BaseModel):
+    wine: Wine
+    recommendations: List[Wine]

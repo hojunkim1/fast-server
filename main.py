@@ -32,14 +32,24 @@ def get_db():
 
 
 # Get one wine
-@app.get("/wines/{wine_id}", status_code=200, response_model=schemas.Wine)
+@app.get("/wines/{wine_id}", status_code=200, response_model=schemas.WineWithRecommendations)
 def read_wine(wine_id: int, db: Session = Depends(get_db)):
     wine: models.Wine = crud.get_wine_by_wine_id(db, wine_id)
     if wine is None:
         raise HTTPException(status_code=404, detail="To do not found")
     crud.update_count(db, wine)
-    return wine
+    ###
+    recommended_wines = [
+        crud.get_wine_by_wine_id(db, wine.re1),
+        crud.get_wine_by_wine_id(db, wine.re2),
+        crud.get_wine_by_wine_id(db, wine.re3)
+    ]
 
+    ###
+    return {
+        "wine": wine,
+        "recommendations": recommended_wines
+    }
 
 # Search wine
 @app.post("/wines/search/{name}", status_code=200, response_model=List[schemas.Wine])
@@ -58,7 +68,7 @@ def top_ten(db: Session = Depends(get_db)):
 @app.post("/gpt/")
 def run_conversation(item: schemas.OcrItem, db: Session = Depends(get_db)):
     openai.organization = "org-ILi5zyGBnNlwVzZBJddFY8Nl"
-    openai.api_key = "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"
+    openai.api_key = "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"
     openai.Model.list()
 
     content = f"""
@@ -86,6 +96,10 @@ def recom_wine(wine1: int, wine2: int, wine3: int, db: Session = Depends(get_db)
         crud.get_wine_by_wine_id(db, wine3)
     ]
     return wines
+
+
+
+
 # 이름으로 와인 가져오기
 # @app.get("/wines/{name}", status_code=200, response_model=schemas.Wine)
 # def get_wine_ex_name(name: str, db: Session = Depends(get_db)):
