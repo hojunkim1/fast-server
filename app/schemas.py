@@ -1,7 +1,8 @@
+from typing import List
 from typing import Union
 
 from pydantic import BaseModel
-from typing import List
+
 
 class OcrItem(BaseModel):
     ocr_text: str
@@ -22,9 +23,10 @@ class Wine(BaseModel):
     food: str
     pic_url: str
     count: int
-    re1:int
-    re2:int
-    re3:int
+    re1: int
+    re2: int
+    re3: int
+
 
 class WineWithRecommendations(BaseModel):
     wine: Wine

@@ -1,7 +1,6 @@
 from sqlalchemy import or_
 from sqlalchemy.orm import Session
 
-
 import app.models as models
 
 
@@ -20,7 +19,7 @@ def get_wine_by_ex_name(db: Session, name: str):
 # 한영 상관없이 검색하는 기능
 def get_wine_by_wine_name(db: Session, name: str):
     return db.query(models.Wine).filter(
-        or_(models.Wine.name_kr.like(f"%{name}%"), models.Wine.name_en.like(f"%{name}%"))).all()
+        or_(models.Wine.name_kr.ilike(f"%{name}%"), models.Wine.name_en.ilike(f"%{name}%"))).all()
 
 
 # 영어로만 검색하는 기능
@@ -36,7 +35,8 @@ def update_count(db: Session, wine: models.Wine):
     db.commit()
     db.refresh(wine)
 
-def re_wine(re1:int,re2:int,re3:int,db:Session):
+
+def re_wine(re1: int, re2: int, re3: int, db: Session):
     recommended_wines = [
         get_wine_by_wine_id(db, re1),
         get_wine_by_wine_id(db, re2),

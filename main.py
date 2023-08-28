@@ -51,6 +51,15 @@ def read_wine(wine_id: int, db: Session = Depends(get_db)):
         "recommendations": recommended_wines
     }
 
+
+@app.get("/wineeeee/{wine_id}", status_code=200, response_model=schemas.Wine)
+def read_wine(wine_id: int, db: Session = Depends(get_db)):
+    wine: models.Wine = crud.get_wine_by_wine_id(db, wine_id)
+    if wine is None:
+        raise HTTPException(status_code=404, detail="To do not found")
+    return wine
+
+
 # Search wine
 @app.post("/wines/search/{name}", status_code=200, response_model=List[schemas.Wine])
 def search_wine_by_name(name: str, lang: str, db: Session = Depends(get_db)):
@@ -68,13 +77,13 @@ def top_ten(db: Session = Depends(get_db)):
 @app.post("/gpt/")
 def run_conversation(item: schemas.OcrItem, db: Session = Depends(get_db)):
     openai.organization = "org-ILi5zyGBnNlwVzZBJddFY8Nl"
-    openai.api_key = "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"
+    openai.api_key = "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"
     openai.Model.list()
 
     content = f"""
         \"""{item.ocr_text}\"""
-        Exact wine product name without vintage
-        Response format : "wine_name" only
+        Exact wine product name without vintage as English
+        Response format : "wine_name" only with capitalizaion
     """
     messages = [{"role": "user", "content": content}]
 
@@ -87,7 +96,8 @@ def run_conversation(item: schemas.OcrItem, db: Session = Depends(get_db)):
     message = response_message["content"]
     return crud.search_wine_by_en_name(db, message)
 
-#추천와인 3개 보내주기
+
+# 추천와인 3개 보내주기
 @app.get("/test/", status_code=200, response_model=List[schemas.Wine])
 def recom_wine(wine1: int, wine2: int, wine3: int, db: Session = Depends(get_db)):
     wines = [
@@ -96,9 +106,6 @@ def recom_wine(wine1: int, wine2: int, wine3: int, db: Session = Depends(get_db)
         crud.get_wine_by_wine_id(db, wine3)
     ]
     return wines
-
-
-
 
 # 이름으로 와인 가져오기
 # @app.get("/wines/{name}", status_code=200, response_model=schemas.Wine)
@@ -116,8 +123,3 @@ def recom_wine(wine1: int, wine2: int, wine3: int, db: Session = Depends(get_db)
 #         raise HTTPException(status_code=404, detail="To do not found")
 #     return wine
 
-
-# ??
-# @app.post("/search/{name_en}", status_code=200, response_model=schemas.Wine)
-# def search_wine(name_en: str, db: Session = Depends(get_db)):
-#     return db.query(name_en)
