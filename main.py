@@ -10,6 +10,9 @@ import app.models as models
 import app.schemas as schemas
 from app.database import SessionLocal
 
+ORGANIZATION = "org-ILi5zyGBnNlwVzZBJddFY8Nl"
+API_KEY = "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"
+
 app = FastAPI()
 
 
@@ -22,15 +25,6 @@ def get_db():
         db.close()
 
 
-# 필요한 기능
-# 라우터
-# 1. 홈 화면을 위해 추천 와인 10개 던져주기 -> 트리톤 서버 사용해보기
-# 2. 검색 기능에서 Body 로 orm_dta 받기
-
-# 데이터베이스
-# 1. 검섹 로그 저징
-
-
 # Get one wine
 @app.get("/wines/recommend/{wine_id}", status_code=200, response_model=schemas.WineWithRecommendations)
 def read_wine(wine_id: int, db: Session = Depends(get_db)):
@@ -38,14 +32,13 @@ def read_wine(wine_id: int, db: Session = Depends(get_db)):
     if wine is None:
         raise HTTPException(status_code=404, detail="To do not found")
     crud.update_count(db, wine)
-    ###
+
     recommended_wines = [
         crud.get_wine_by_wine_id(db, wine.re1),
         crud.get_wine_by_wine_id(db, wine.re2),
         crud.get_wine_by_wine_id(db, wine.re3)
     ]
 
-    ###
     return {
         "wine": wine,
         "recommendations": recommended_wines
@@ -76,8 +69,8 @@ def top_ten(db: Session = Depends(get_db)):
 
 @app.post("/gpt/")
 def run_conversation(item: schemas.OcrItem, db: Session = Depends(get_db)):
-    openai.organization = "org-ILi5zyGBnNlwVzZBJddFY8Nl"
-    openai.api_key = "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"
+    openai.organization = ORGANIZATION
+    openai.api_key = API_KEY
     openai.Model.list()
 
     content = f"""
@@ -106,20 +99,3 @@ def recom_wine(wine1: int, wine2: int, wine3: int, db: Session = Depends(get_db)
         crud.get_wine_by_wine_id(db, wine3)
     ]
     return wines
-
-# 이름으로 와인 가져오기
-# @app.get("/wines/{name}", status_code=200, response_model=schemas.Wine)
-# def get_wine_ex_name(name: str, db: Session = Depends(get_db)):
-#     wine: models.Wine = crud.get_wine_by_ex_name(db, name)
-#     if wine is None:
-#         raise HTTPException(status_code=404, detail="To do not found")
-#     return wine
-
-# ??
-# @app.post("/wines/{name_en}", status_code=200, response_model=schemas.Wine)
-# def answer_wine(name_en: str, db: Session = Depends(get_db)):
-#     wine: models.Wine = crud.get_wine_by_wine_name(db, name_en)
-#     if wine is None:
-#         raise HTTPException(status_code=404, detail="To do not found")
-#     return wine
-

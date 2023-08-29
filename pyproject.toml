@@ -6,9 +6,10 @@ authors = ["dongwon Oh <omj1010@naver.com>"]
 readme = "README.md"
 packages = [{ include = "fast_server" }]
 
+
 [tool.poetry.dependencies]
-python = "^3.11"
-fastapi = "^0.101.1"
+python = "^3.9"
+fastapi = "^0.103.0"
 uvicorn = "^0.23.2"
 sqlalchemy = "^2.0.20"
 psycopg = { extras = ["binary", "pool"], version = "^3.1.10" }

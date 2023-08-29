@@ -4,10 +4,6 @@ from sqlalchemy.orm import Session
 import app.models as models
 
 
-# def get_wine_by_wine_id(db: Session, wine_id: int) -> models.Wine:
-#    return db.scalar(select(models.Wine).select_from(db).where(models.Wine.wine_id == wine_id))
-
-
 def get_wine_by_wine_id(db: Session, wine_id: int) -> models.Wine:
     return db.query(models.Wine).filter(models.Wine.wine_id == wine_id).first()
 

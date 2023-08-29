@@ -23,6 +23,7 @@ class Wine(Base):
     re1 = Column(Integer, nullable=True)
     re2 = Column(Integer, nullable=True)
     re3 = Column(Integer, nullable=True)
+
     def increase_count(self):
         self.count += 1
         return self
