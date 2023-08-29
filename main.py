@@ -1,5 +1,5 @@
 from typing import List
-
+import os
 import openai
 from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy import desc
@@ -11,7 +11,7 @@ import app.schemas as schemas
 from app.database import SessionLocal
 
 ORGANIZATION = "org-ILi5zyGBnNlwVzZBJddFY8Nl"
-API_KEY = "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"
+API_KEY = os.environ.get("API_KEY")
 
 app = FastAPI()
 
