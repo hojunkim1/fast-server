@@ -11,7 +11,7 @@ import app.schemas as schemas
 from app.database import SessionLocal
 
 ORGANIZATION = "org-ILi5zyGBnNlwVzZBJddFY8Nl"
-API_KEY = "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"
+API_KEY = "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"
 
 app = FastAPI()
 
