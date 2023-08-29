@@ -3,3 +3,6 @@ poetry.lock
 
 # IDE
 .idea
+
+# macOS
+.DS_Store
