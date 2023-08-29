@@ -10,6 +10,9 @@ import app.models as models
 import app.schemas as schemas
 from app.database import SessionLocal
 
+ORGANIZATION = "org-ILi5zyGBnNlwVzZBJddFY8Nl"
+API_KEY = "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"
+
 app = FastAPI()
 
 
@@ -66,8 +69,8 @@ def top_ten(db: Session = Depends(get_db)):
 
 @app.post("/gpt/")
 def run_conversation(item: schemas.OcrItem, db: Session = Depends(get_db)):
-    openai.organization = "org-ILi5zyGBnNlwVzZBJddFY8Nl"
-    openai.api_key = "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"
+    openai.organization = ORGANIZATION
+    openai.api_key = API_KEY
     openai.Model.list()
 
     content = f"""
