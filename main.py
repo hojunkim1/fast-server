@@ -32,7 +32,7 @@ def get_db():
 
 
 # Get one wine
-@app.get("/wines/{wine_id}", status_code=200, response_model=schemas.WineWithRecommendations)
+@app.get("/wines/recommend/{wine_id}", status_code=200, response_model=schemas.WineWithRecommendations)
 def read_wine(wine_id: int, db: Session = Depends(get_db)):
     wine: models.Wine = crud.get_wine_by_wine_id(db, wine_id)
     if wine is None:
@@ -52,7 +52,7 @@ def read_wine(wine_id: int, db: Session = Depends(get_db)):
     }
 
 
-@app.get("/wineeeee/{wine_id}", status_code=200, response_model=schemas.Wine)
+@app.get("/wines/{wine_id}", status_code=200, response_model=schemas.Wine)
 def read_wine(wine_id: int, db: Session = Depends(get_db)):
     wine: models.Wine = crud.get_wine_by_wine_id(db, wine_id)
     if wine is None:
@@ -71,13 +71,13 @@ def search_wine_by_name(name: str, lang: str, db: Session = Depends(get_db)):
 # 상위 10개 와인데이터 불러오기
 @app.get("/top/", status_code=200, response_model=List[schemas.Wine])
 def top_ten(db: Session = Depends(get_db)):
-    return db.query(models.Wine).order_by(desc(models.Wine.count)).limit(10).all()
+    return db.query(models.Wine).order_by(desc(models.Wine.count)).limit(9).all()
 
 
 @app.post("/gpt/")
 def run_conversation(item: schemas.OcrItem, db: Session = Depends(get_db)):
     openai.organization = "org-ILi5zyGBnNlwVzZBJddFY8Nl"
-    openai.api_key = "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"
+    openai.api_key = "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"
     openai.Model.list()
 
     content = f"""
